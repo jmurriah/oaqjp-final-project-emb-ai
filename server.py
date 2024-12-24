@@ -1,4 +1,4 @@
-# Import the Flask class from the flask module
+""" Program to run the Server """
 from flask import Flask
 from EmotionDetection.emotion_detection import emotion_detector
 
@@ -8,15 +8,18 @@ app = Flask("EmotionDetection")
 @app.route("/emotionDetector/")
 @app.route("/emotionDetector/<string:emotion>")
 def emotion_detection(emotion = None):
+    '''
+    This is the function to get the emotions
+    '''
     # Function that handles requests to the root URL
     emotions = emotion_detector(emotion)
-    
-    if emotions["dominant_emotion"] == None:
+
+    if emotions["dominant_emotion"] is None:
         return "Invalid text! Please try again!"
 
     res = "For the give statement, the system response is "
     for  key in emotions:
-        if (key != "dominant_emotion"):
+        if key != "dominant_emotion":
             res += " '" + key + "': " + str(emotions[key]) + ", "
     res = res[:-2]
     res += ". The dominant emotion is <b>" + emotions["dominant_emotion"] + "</b>."
